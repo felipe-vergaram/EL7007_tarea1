@@ -21,13 +21,13 @@ filtro = img[inf:sup, inf:sup]
 
 filtro_norm = filtro/np.linalg.norm(filtro)
 #plt.imshow(filtro)
-conv = signal.convolve2d(img,filtro)
+conv = signal.convolve2d(img,filtro_norm)
 
 fig=plt.figure()
 fig.add_subplot(1,3,1)
 plt.imshow(img)
 fig.add_subplot(1,3,2)
-plt.imshow(filtro)
+plt.imshow(filtro_norm)
 fig.add_subplot(1,3,3)
 plt.imshow(conv)
 #fig, ax = plt.subplots(1,2)
