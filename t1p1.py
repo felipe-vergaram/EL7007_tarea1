@@ -9,7 +9,7 @@ from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
 
-img = scipy.io.loadmat('img.mat')['img'].astype('uint32')
+img = scipy.io.loadmat('fotos\img.mat')['img'].astype('uint32')
 img = img/np.min(img)
 
 width, height = img.shape
