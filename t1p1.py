@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sun Oct 18 10:58:12 2020
 
-@author: Juan Vergara
-"""
 import scipy.io
 from scipy import signal
 import numpy as np
@@ -35,7 +31,7 @@ min_val = np.min(filtro_norm)
 max_val = np.max(filtro_norm)
 fact = 1+2*min_val/(max_val-min_val)
 filtro_2 = -filtro_norm*fact + max_val*fact - min_val
-
+#filtro_2 = -filtro_norm + min_val + max_val
 conv2 = signal.convolve2d(img,filtro_2)
 
 fig2=plt.figure()
