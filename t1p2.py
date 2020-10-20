@@ -3,57 +3,83 @@ from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
 import imageio
-from scipy import ndimage
 
-img = imageio.imread('fotos/faces.jpg')
-#img = imageio.imread('fotos\\faces.jpg')
-conv = np.zeros(img.shape)
-d=30
-filtro = np.ones((d,d))/(d**2)
+
+save_figures = False
+show_figures = True
+
+# Importar imagen. Si se ejecuta en Windows, usar el path comentado
+# path = 'fotos\\faces.jpg'
+path = 'fotos/faces.jpg'
+img = imageio.imread(path)
+
+# Definir filtro pasabajos dado el tamaño dxd
+d = 30
+lowpass_filter = np.ones((d,d))/(d**2)
+
+# Calcular convolución de imagen con filtro pasabajos
+lowpass = np.zeros(img.shape)
 for channel in range(3):
-    conv[:,:,channel] = signal.convolve2d(img[:,:,channel], filtro,mode='same')
+    lowpass[:,:,channel] = signal.convolve2d(img[:,:,channel],
+                                             lowpass_filter,
+                                             mode = 'same')
+lowpass = np.uint8(lowpass)
 
-#conv = signal.convolve(img,filtro,'same').astype(uint(8))
-conv=np.uint8(conv)
-fig=plt.figure()
+# Mostrar imagen original y filtrada
+fig = plt.figure()
 fig.add_subplot(1,2,1)
+plt.title('Imagen original')
 plt.imshow(img)
 fig.add_subplot(1,2,2)
-plt.imshow(conv)
+plt.title('Imagen filtrada con pasabajos')
+plt.imshow(lowpass)
+
+# Opcional: Guardar imagen
+if save_figures:
+    plt.savefig('p2_lowpass')
 
 
+# Creación de filtro pasabanda a partir de 2 filtros pasabajos auxiliares
+# Defnir filtro pasabajos auxiliar 1 de tamaño d1xd1
+d1 = 15
+aux_lowpass_filter_1 = np.ones((d1,d1))/(d1**2)
 
-conv2 = np.zeros(img.shape)
-d2=15
-filtro2 = np.ones((d2,d2))/(d2**2)
+# Calcular convolución de imagen con filtro pasabajos auxiliar 1
+aux_lowpass_1 = np.zeros(img.shape)
 for channel in range(3):
-    conv2[:,:,channel] = signal.convolve2d(img[:,:,channel], filtro2,mode='same')
-conv2=np.uint8(conv2)
+    aux_lowpass_1[:,:,channel] = signal.convolve2d(img[:,:,channel],
+                                                   aux_lowpass_filter_1,
+                                                   mode = 'same')
+aux_lowpass_1 = np.uint8(aux_lowpass_1)
 
-conv3 = np.zeros(img.shape)
-d3=13
-filtro3 = np.ones((d3,d3))/(d3**2)
+# Defnir filtro pasabajos auxiliar 2 de tamaño d2xd2
+d2 = 13
+aux_lowpass_filter_2 = np.ones((d2,d2))/(d2**2)
+
+# Calcular convolución de imagen con filtro pasabajos auxiliar 2
+aux_lowpass_2 = np.zeros(img.shape)
 for channel in range(3):
-    conv3[:,:,channel] = signal.convolve2d(img[:,:,channel], filtro3,mode='same')
-conv3=np.uint8(conv3)
+    aux_lowpass_2[:,:,channel] = signal.convolve2d(img[:,:,channel],
+                                                   aux_lowpass_filter_2,
+                                                   mode = 'same')
+aux_lowpass_2 = np.uint8(aux_lowpass_2)
 
-conv4= (conv3-conv2)//4
+# Cálculo de imagen filtrada con pasabanda. La división por 4 es solo estética
+bandpass = (aux_lowpass_2-aux_lowpass_1)//4
 
-
-fig2=plt.figure()
-fig2.add_subplot(1,4,1)
+# Mostrar imagen original y filtrada
+fig2 = plt.figure()
+fig2.add_subplot(1,2,1)
+plt.title('Imagen original')
 plt.imshow(img)
-fig2.add_subplot(1,4,2)
-plt.imshow(conv2)
-plt.title('d2 = %d' %(d2))
-#plt.imshow(ndimage.gaussian_filter(img, f1))
-fig2.add_subplot(1,4,3)
-plt.imshow(conv3)
-plt.title('d3 = %d' %(d3))
-#plt.imshow(ndimage.gaussian_filter(img, f2))
-fig2.add_subplot(1,4,4)
-plt.imshow(conv4)
-#plt.imshow(gauss_bandpass)
-plt.savefig('test/00_2_13_3')
-plt.close(fig2)
-#plt.show()
+fig2.add_subplot(1,2,2)
+plt.title('Imagen filtrada con pasabanda')
+plt.imshow(bandpass)
+
+# Opcional: Guardar imagen
+if save_figures:
+    plt.savefig('p2_bandpass')
+
+# Opcional: Mostrar figuras
+if show_figures:
+    plt.show()
