@@ -3,7 +3,7 @@ from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
 
-save_figures = False
+save_figures = True
 show_figures = True
 
 # Importar imagen, normalizar y obtener tamaño. Si se ejecuta en Win10, usar
