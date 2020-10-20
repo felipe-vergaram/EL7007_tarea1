@@ -24,17 +24,20 @@ filtro_norm = filtro/np.linalg.norm(filtro)
 conv = signal.convolve2d(img,filtro_norm)
 
 # Mostrar imagen original, filtro y filtrada
-fig1=plt.figure()
+fig1=plt.figure(figsize=[6.4,3])
 fig1.suptitle('Detector de intersecciones')
 fig1.add_subplot(1,3,1)
 plt.title('Original')
 plt.imshow(img)
+plt.axis('off')
 fig1.add_subplot(1,3,2)
 plt.title('Filtro')
 plt.imshow(filtro_norm)
+plt.axis('off')
 fig1.add_subplot(1,3,3)
 plt.title('Imagen filtrada')
 plt.imshow(conv)
+plt.axis('off')
 
 # Opcional: Guardar figuras
 if save_figures:
@@ -51,17 +54,20 @@ filtro_2 = -filtro_norm*fact + max_val*fact - min_val
 conv2 = signal.convolve2d(img,filtro_2)
 
 # Mostrar imagen original, filtro y filtrada
-fig2=plt.figure()
+fig2=plt.figure(figsize=[6.4,3])
 fig2.suptitle('Inhibidor de intersecciones')
 fig2.add_subplot(1,3,1)
 plt.title('Original')
 plt.imshow(img)
+plt.axis('off')
 fig2.add_subplot(1,3,2)
 plt.title('Filtro')
 plt.imshow(filtro_2)
+plt.axis('off')
 fig2.add_subplot(1,3,3)
 plt.title('Imagen filtrada')
 plt.imshow(conv2)
+plt.axis('off')
 
 # Opcional: Guardar figuras
 if save_figures:
