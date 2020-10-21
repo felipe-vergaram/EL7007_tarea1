@@ -2,6 +2,7 @@ import scipy.io
 from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
+import cv2
 
 save_figures = True
 show_figures = True
@@ -72,6 +73,32 @@ plt.axis('off')
 # Opcional: Guardar figuras
 if save_figures:
     plt.savefig('p1_inhibidor')
+
+
+# Probar filtro con distintos tamaños
+# Definir tamaños a probar y crear lista donde se irán guardando las resultantes
+original_size = len(filtro_norm)
+sizes = [int(x*original_size) for x in [0.5, 0.75, 1, 1.5, 1.75, 2]]
+filter_size_comparison = []
+
+# Hacer convoluciones
+for size in sizes:
+    filtro_i = cv2.resize(filtro_norm,
+                          dsize=(size, size),
+                          interpolation=cv2.INTER_LINEAR)
+    filter_size_comparison.append(signal.convolve2d(img,filtro_i))
+
+# Mostrar comparación de filtrados
+fig3 = plt.figure(figsize=[8,4])
+fig3.suptitle('Comparación de tamaños de filtros')
+for i,size in enumerate(sizes):
+    fig3.add_subplot(2,len(sizes)//2,i+1)
+    plt.title('%dx%d' %(size,size))
+    plt.imshow(filter_size_comparison[i], vmin=0, vmax=280)
+    plt.axis('off')
+# Opcional: Guardar imagen
+if save_figures:
+    plt.savefig('p1_filter_size_comparison')
 
 # Opcional: Mostrar figuras
 if show_figures:
