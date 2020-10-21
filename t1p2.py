@@ -9,7 +9,6 @@ save_figures = True
 show_figures = True
 
 # Importar imagen. Si se ejecuta en Windows, usar el path comentado
-# path = 'fotos\\faces.jpg' # Windows 10
 path = 'fotos/faces.jpg' # Linux
 img = imageio.imread(path)
 
