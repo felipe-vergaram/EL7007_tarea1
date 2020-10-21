@@ -8,8 +8,8 @@ import imageio
 save_figures = True
 show_figures = True
 
-# Importar imagen. Si se ejecuta en Windows, usar el path comentado
-path = 'fotos/faces.jpg' # Linux
+# Importar imagen.
+path = 'fotos/faces.jpg'
 img = imageio.imread(path)
 
 # Definir filtro pasabajos dado el tamaño dxd

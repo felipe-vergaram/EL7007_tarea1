@@ -7,9 +7,8 @@ import cv2
 save_figures = True
 show_figures = True
 
-# Importar imagen, normalizar y obtener tamaño. Si se ejecuta en Win10, usar
-# el path comentado
-path = 'fotos/img.mat' # Linux
+# Importar imagen, normalizar y obtener tamaño.
+path = 'fotos/img.mat'
 img = scipy.io.loadmat(path)['img'].astype('uint32')
 img = img/np.min(img)
 width, height = img.shape
