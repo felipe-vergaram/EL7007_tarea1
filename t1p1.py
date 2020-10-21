@@ -17,7 +17,7 @@ width, height = img.shape
 inf = width//2 - width//12
 sup = width//2 + width//12 +2
 filtro = img[inf:sup, inf:sup]
-filtro_norm = filtro/np.linalg.norm(filtro)
+filtro_norm = (filtro- np.mean(filtro))/(np.linalg.norm(filtro))
 
 # Realizar la convolución
 conv = signal.convolve2d(img,filtro_norm)
@@ -44,10 +44,7 @@ if save_figures:
 
 
 # Crear filtro inhibidor de intersecciones
-min_val = np.min(filtro_norm)
-max_val = np.max(filtro_norm)
-fact = 1 + 2*min_val/(max_val-min_val)
-filtro_2 = -filtro_norm*fact + max_val*fact - min_val
+filtro_2 = -filtro_norm
 
 # Realizar la convolución
 conv2 = signal.convolve2d(img,filtro_2)
@@ -90,9 +87,10 @@ for size in sizes:
 fig3 = plt.figure(figsize=[8,4])
 fig3.suptitle('Comparación de tamaños de filtros')
 for i,size in enumerate(sizes):
+    print("min max: ", np.min(filter_size_comparison[i]), np.max(filter_size_comparison[i]))
     fig3.add_subplot(2,len(sizes)//2,i+1)
     plt.title('%dx%d' %(size,size))
-    plt.imshow(filter_size_comparison[i], vmin=0, vmax=280)
+    plt.imshow(filter_size_comparison[i], vmin=-32, vmax=38)
     plt.axis('off')
 # Opcional: Guardar imagen
 if save_figures:
