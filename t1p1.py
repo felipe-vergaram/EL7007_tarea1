@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
-save_figures = False
+save_figures = True
 show_figures = True
 
 # Importar imagen, normalizar y obtener tamaño.
@@ -87,9 +87,6 @@ for size in sizes:
     filter_size_comparison.append(signal.convolve2d(img,filtro_i))
 
 # Mostrar comparación de filtrados
-#min = np.min(filter_size_comparison)
-#max = np.max(filter_size_comparison)
-#assert(type(min_val)==int and type(max_val)==int)
 fig3 = plt.figure(figsize=[8,4])
 fig3.suptitle('Comparación de tamaños de filtros')
 fig3.add_subplot(2,(len(sizes)+1)//2,1)
