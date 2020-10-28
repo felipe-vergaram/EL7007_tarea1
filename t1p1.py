@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
-save_figures = True
+save_figures = False
 show_figures = True
 
 # Importar imagen, normalizar y obtener tamaño.
@@ -73,24 +73,34 @@ if save_figures:
 # Probar filtro con distintos tamaños
 # Definir tamaños a probar y crear lista donde se irán guardando las resultantes
 original_size = len(filtro_norm)
-sizes = [int(x*original_size) for x in [0.5, 0.75, 1, 1.5, 1.75, 2]]
+sizes = [int(x*original_size) for x in [0.25,0.375, 0.5, 0.75, 1]]
 filter_size_comparison = []
+filter_center_contour = np.zeros((original_size, original_size))
+contour = original_size//4
+filter_center_contour[contour:-contour,contour:-contour] += 1
 
 # Hacer convoluciones
 for size in sizes:
-    filtro_i = cv2.resize(filtro_norm,
+    filtro_i = cv2.resize(filter_center_contour,
                           dsize=(size, size),
                           interpolation=cv2.INTER_LINEAR)
     filter_size_comparison.append(signal.convolve2d(img,filtro_i))
 
 # Mostrar comparación de filtrados
+#min = np.min(filter_size_comparison)
+#max = np.max(filter_size_comparison)
+#assert(type(min_val)==int and type(max_val)==int)
 fig3 = plt.figure(figsize=[8,4])
 fig3.suptitle('Comparación de tamaños de filtros')
+fig3.add_subplot(2,(len(sizes)+1)//2,1)
+plt.title('Filtro original')
+plt.imshow(filter_center_contour)
+plt.axis('off')
+
 for i,size in enumerate(sizes):
-    print("min max: ", np.min(filter_size_comparison[i]), np.max(filter_size_comparison[i]))
-    fig3.add_subplot(2,len(sizes)//2,i+1)
+    fig3.add_subplot(2,(len(sizes)+1)//2,i+2)
     plt.title('%dx%d' %(size,size))
-    plt.imshow(filter_size_comparison[i], vmin=-32, vmax=38)
+    plt.imshow(filter_size_comparison[i])
     plt.axis('off')
 # Opcional: Guardar imagen
 if save_figures:
